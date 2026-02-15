@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R_PATTON.SYS</title>
+    <style>
+        /* CSS Variables for easy theme management */
+        :root {
+            --bg: #f4f1ea;        /* Vintage Paper */
+            --text: #222222;      /* Ink Black */
+            --accent: #d33682;    /* Retro Magenta */
+            --border: #222222;
+            --shadow: #999999;
+            --crt-overlay: rgba(0,0,0,0);
+        }
+
+        /* The "Cool Selector": Toggle logic using :has() - No JS needed */
+        html:has(#theme-switch:checked) {
+            --bg: #1a1b1a;        /* Terminal Black */
+            --text: #7ed321;      /* Muted Phosphor Green */
+            --accent: #b5e853;    /* Light Green */
+            --border: #7ed321;
+            --shadow: #004400;
+            --crt-overlay: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                           linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            background-image: var(--crt-overlay);
+            background-size: 100% 3px, 3px 100%;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 3px solid var(--border);
+            padding: 2rem;
+            box-shadow: 10px 10px 0px var(--shadow);
+            position: relative;
+        }
+
+        /* UI Toggle styling */
+        .toggle-box {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            border: 2px solid var(--border);
+            padding: 5px;
+        }
+
+        #theme-switch { cursor: pointer; }
+
+        header {
+            border-bottom: 3px double var(--border);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid var(--border);
+            padding: 5px 10px;
+        }
+
+        nav a:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        /* How to add images with a retro feel */
+        .image-frame {
+            border: 2px solid var(--border);
+            padding: 10px;
+            margin: 20px 0;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .image-frame img {
+            max-width: 100%;
+            display: block;
+            /* Filter makes any modern image look like a newspaper or old monitor */
+            filter: grayscale(1) contrast(1.2);
+            mix-blend-mode: multiply; /* Blends image into the paper background */
+        }
+
+        html:has(#theme-switch:checked) .image-frame img {
+            filter: grayscale(1) brightness(0.8) sepia(100%) hue-rotate(50deg) saturate(4);
+            mix-blend-mode: screen; /* Makes image glow on dark background */
+        }
+
+        fieldset {
+            border: 2px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        legend {
+            padding: 0 10px;
+            font-weight: bold;
+        }
+
+        .status-bar {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Blinking cursor effect */
+        .cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="toggle-box">
+            <input type="checkbox" id="theme-switch">
+            <label for="theme-switch">DARK_MODE</label>
+        </div>
+
+        <header>
+            <h1>ROBERT PATTON MEng<span class="cursor">_</span></h1>
+            <p>Mechanical Engineer | Full-Stack Systems Developer</p>
+        </header>
+
+        <main>
+            <section>
+                <p>> LOADING BIO...</p>
+                <p>
+                    Specialist in <strong>Offshore Wind Development</strong> at Ramboll. 
+                    Expertise in mechanical design (Cummins), automated CAD pipelines, and 
+                    predictive ML models for materials engineering.
+                </p>
+            </section>
+
+            <div class="image-frame">
+                <img src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Project Visualization">
+                <p><small>FIG 01: Automated 3D Metadata Extraction Interface</small></p>
+            </div>
+
+            <nav>
+                <a href="/cv">GET /CV</a>
+                <a href="/projects">LIST /PROJECTS</a>
+                <a href="https://linkedin.com/in/r-patton" target="_blank">CONNECT /LINKEDIN</a>
+            </nav>
+
+            <fieldset>
+                <legend>PRIMARY_TECH_STACK</legend>
+                <ul>
+                    <li><strong>ENG:</strong> CREO, SOLIDWORKS, GD&T, FEA/CFD</li>
+                    <li><strong>DEV:</strong> GO, PYTHON, TYPESCRIPT, DOCKER, K8S</li>
+                    <li><strong>RES:</strong> ML EROSION PREDICTION (EUROCORR 2025)</li>
+                </ul>
+            </fieldset>
+        </main>
+
+        <div class="status-bar">
+            <span>LOC: LONDON_UK</span>
+            <span>STATUS: ACTIVE</span>
+            <span>VER: 2.0.26</span>
+        </div>
+    </div>
+
+</body>
+</html>
