@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R_PATTON.SYS // CV</title>
+    <style>
+        :root {
+            --bg: #f4f1ea;
+            --text: #222222;
+            --accent: #d33682;
+            --border: #222222;
+            --shadow: #999999;
+            --crt: rgba(0,0,0,0);
+        }
+
+        html:has(#theme-switch:checked) {
+            --bg: #1a1b1a;
+            --text: #7ed321;
+            --accent: #b5e853;
+            --border: #7ed321;
+            --shadow: #004400;
+            --crt: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                   linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+        }
+
+        /* TAB FILTERING LOGIC */
+        /* If 'Engineering' is selected, hide 'dev-only' items */
+        html:has(#tab-eng:checked) .item-dev { display: none; }
+        /* If 'Dev' is selected, hide 'eng-only' items */
+        html:has(#tab-dev:checked) .item-eng { display: none; }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            background-image: var(--crt);
+            background-size: 100% 3px, 3px 100%;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            border: 3px solid var(--border);
+            padding: 2rem;
+            box-shadow: 10px 10px 0px var(--shadow);
+            position: relative;
+        }
+
+        /* Top Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tabs label {
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Highlight active tab */
+        html:has(#tab-all:checked) label[for="tab-all"],
+        html:has(#tab-eng:checked) label[for="tab-eng"],
+        html:has(#tab-dev:checked) label[for="tab-dev"] {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        input[type="radio"], #theme-switch { display: none; }
+
+        .theme-label {
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            cursor: pointer;
+        }
+
+        header h1 { margin: 0; font-size: 2rem; text-transform: uppercase; }
+        .contact-info { font-size: 0.85rem; margin: 10px 0; border-bottom: 1px solid var(--border); padding-bottom: 10px;}
+
+        fieldset { border: 2px solid var(--border); margin: 20px 0; }
+        legend { padding: 0 10px; font-weight: bold; text-transform: uppercase; }
+
+        .exp-header { display: flex; justify-content: space-between; font-weight: bold; margin-top: 15px; }
+        .exp-role { color: var(--accent); }
+
+        ul { padding-left: 20px; list-style-type: "[*] "; }
+        li { margin-bottom: 5px; }
+
+        .back-link { text-decoration: none; color: var(--text); font-weight: bold; }
+        .back-link:hover { background: var(--text); color: var(--bg); }
+
+        @media print {
+            .controls, .back-link { display: none; }
+            .container { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <input type="radio" name="view" id="tab-all" checked>
+    <input type="radio" name="view" id="tab-eng">
+    <input type="radio" name="view" id="tab-dev">
+    <input type="checkbox" id="theme-switch">
+
+    <div class="container">
+        <div class="controls">
+            <div class="tabs">
+                <label for="tab-all">[ EXPANSIVE ]</label>
+                <label for="tab-eng">[ ENGINEERING ]</label>
+                <label for="tab-dev">[ DEVELOPMENT ]</label>
+            </div>
+            <label for="theme-switch" class="theme-label">TOGGLE_PIXELS</label>
+        </div>
+
+        <header>
+            <a href="/" class="back-link"><< RETURN TO ROOT</a>
+            <h1>ROBERT PATTON</h1>
+            <div class="contact-info">
+                MEng EngTech IMechE | London, UK | 07931 418928<br>
+                rn.patton@outlook.com | <a href="https://linkedin.com/in/r-patton">linkedin.com/in/r-patton</a>
+            </div>
+            <p><strong>STATEMENT:</strong> Mechanical Engineer and Consultant developing digital tools for the built environment. I bridge the gap between heavy-duty industrial engineering and modern full-stack application delivery.</p>
+        </header>
+
+        <section id="skills">
+            <fieldset>
+                <legend>Skill_Matrix</legend>
+                <ul>
+                    <li class="item-dev"><strong>PROG & DEVOPS:</strong> Python, Go, JavaScript, C# (.NET/Unity), Docker, K8s, CI/CD, Git, REST.</li>
+                    <li class="item-eng"><strong>ENG & ANALYSIS:</strong> PTC Creo, SolidWorks, GD&T, Tolerance Stacks, DFMA, CFD/FEA, GT-Suite.</li>
+                    <li class="item-eng"><strong>RELIABILITY:</strong> DFMEA, FMECA, 7-Step Root Cause Analysis, Six Sigma.</li>
+                    <li class="item-dev"><strong>CLOUD/DATA:</strong> Azure, Google Cloud, Digital Twins, VR, Machine Learning.</li>
+                </ul>
+            </fieldset>
+        </section>
+
+        <section id="experience">
+            <fieldset>
+                <legend>Professional_History</legend>
+                
+                <div class="exp-header">
+                    <span>RAMBOLL | Offshore Wind Development</span>
+                    <span>2024 - PRES</span>
+                </div>
+                <div class="exp-role">Graduate Consultant</div>
+                <ul>
+                    <li class="item-dev">Developed VR-ready full-stack apps embedding CAD into interactive docs; automated 3D pipelines.</li>
+                    <li class="item-dev">Managed Dockerised deployments and CI/CD on GCP Kubernetes for wind asset platforms.</li>
+                    <li class="item-eng">Delivered interdisciplinary engineering scopes and safety-critical risk assessments (FMECA).</li>
+                    <li class="item-eng">Facilitated technical workshops for global energy systems, focusing on cost reduction and decommissioning.</li>
+                </ul>
+
+                <div class="exp-header">
+                    <span>CUMMINS | Engine Business Unit</span>
+                    <span>2022 - 2024</span>
+                </div>
+                <div class="exp-role">Design Engineering Placement</div>
+                <ul>
+                    <li class="item-eng">Owned end-to-end development of cast/machined components for heavy-duty diesel and hydrogen platforms.</li>
+                    <li class="item-eng">Applied generative Creo workflows and collaborated with CFD/FEA experts for thermal/fluid load optimization.</li>
+                    <li class="item-eng">Directed cross-functional teams to resolve field issues using 7-Step Root Cause methods.</li>
+                    <li class="item-dev">Automated analysis tasks using Python to support data-driven engine validation decisions.</li>
+                </ul>
+            </fieldset>
+        </section>
+
+        <section id="education">
+            <fieldset>
+                <legend>Academic_Records</legend>
+                <div class="exp-header">
+                    <span>UNIVERSITY OF LEEDS</span>
+                    <span>2019 - 2024</span>
+                </div>
+                <div>MEng Mechanical Engineering (Industrial) - <strong>First-Class Honours (77% Avg)</strong></div>
+                <ul>
+                    <li class="item-eng"><strong>EuroCorr 2025:</strong> Co-authored research on erosion-corrosion of additive materials.</li>
+                    <li><strong>Dissertation:</strong> Validated prototype medical hardware for Eventum Orthopaedics (78.5%).</li>
+                </ul>
+                <div style="margin-top: 10px;"><strong>A-LEVELS:</strong> Physics (A*), Chemistry (A*), Maths (A), Further Maths (AS: A)</div>
+            </fieldset>
+        </section>
+
+        <section id="projects-brief">
+            <fieldset>
+                <legend>Selected_Logs</legend>
+                <ul>
+                    <li class="item-dev"><strong>NextCMMS:</strong> Enterprise maintenance system built with Go/NextJS.</li>
+                    <li class="item-dev"><strong>WindOps:</strong> Full-stack simulation tool for NREL models (Python/Docker).</li>
+                    <li class="item-eng"><strong>Intake Manifold:</strong> Thermally regulated EGR concept for cold-start optimization.</li>
+                    <li class="item-eng"><strong>Truss Bridge:</strong> MATLAB GUI for stress visualization and member limit analysis.</li>
+                </ul>
+                <a href="/projects" style="font-size: 0.8rem;">[VIEW ALL PROJECTS >>]</a>
+            </fieldset>
+        </section>
+
+        <footer style="font-size: 0.7rem; text-align: center; margin-top: 20px;">
+            VALID_FOR_PRINT // REPATTON.CV.2026 // END_OF_LOG
+        </footer>
+    </div>
+
+</body>
+</html>
