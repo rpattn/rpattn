@@ -1,0 +1,14 @@
+# --- R_PATTON.SYS Environment ---
+__pycache__/
+.venv/
+.uv/
+
+# --- Build Output ---
+# Remove 'public/' from here if you want to commit the final HTML manually
+public/
+
+# --- OS / IDE ---
+.DS_Store
+.vscode/
+.idea/
+*.swp

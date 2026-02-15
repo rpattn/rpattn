@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROBERT PATTON // R_PATTON.SYS</title>
+    <style>
+        /* --- 1. SYSTEM VARIABLES & THEMES --- */
+        :root {
+            --bg: #f4f1ea;
+            --text: #222222;
+            --accent: #d33682;
+            --border: #222222;
+            --shadow: #999999;
+            --crt: rgba(0,0,0,0);
+        }
+
+        /* Logic: Theme Switcher */
+        html:has(#theme-toggle:checked) {
+            --bg: #1a1b1a;
+            --text: #7ed321;
+            --accent: #b5e853;
+            --border: #7ed321;
+            --shadow: #004400;
+            --crt: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                   linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+        }
+
+        /* --- 2. PAGE NAVIGATION LOGIC --- */
+        .page { display: none; }
+        html:has(#nav-home:checked) #page-home { display: block; }
+        html:has(#nav-projects:checked) #page-projects { display: block; }
+        html:has(#nav-cv:checked) #page-cv { display: block; }
+
+        /* CV Sub-filtering */
+        html:has(#tab-eng:checked) .item-dev { display: none; }
+        html:has(#tab-dev:checked) .item-eng { display: none; }
+
+        /* --- 3. CORE AESTHETIC --- */
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+            background-image: var(--crt);
+            background-size: 100% 3px, 3px 100%;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 1rem auto;
+            border: 3px solid var(--border);
+            padding: 2rem;
+            box-shadow: 10px 10px 0px var(--shadow);
+            position: relative;
+        }
+
+        nav { margin: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+        nav label, .cv-tabs label { 
+            cursor: pointer; padding: 4px 8px; border: 1px solid var(--border); font-weight: bold; font-size: 0.9rem;
+        }
+        
+        /* Highlight Active States */
+        html:has(#nav-home:checked) label[for="nav-home"],
+        html:has(#nav-projects:checked) label[for="nav-projects"],
+        html:has(#nav-cv:checked) label[for="nav-cv"],
+        html:has(#tab-all:checked) label[for="tab-all"],
+        html:has(#tab-eng:checked) label[for="tab-eng"],
+        html:has(#tab-dev:checked) label[for="tab-dev"] {
+            background: var(--text); color: var(--bg);
+        }
+
+        input[type="radio"], #theme-toggle { display: none; }
+
+        /* --- 4. LAYOUT COMPONENTS --- */
+        header h1 { margin: 0; font-size: 2.2rem; }
+        .cursor { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        fieldset { border: 2px solid var(--border); margin: 20px 0; padding: 15px; }
+        legend { padding: 0 10px; font-weight: bold; text-transform: uppercase; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { border: 1px solid var(--border); padding: 15px; display: flex; flex-direction: column; }
+        
+        /* Retro Image Styling */
+        .img-container { border: 1px solid var(--border); margin: 10px 0; position: relative; background: #999; overflow: hidden; }
+        .img-container::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 2px; pointer-events: none;
+        }
+        .retro-img { width: 100%; display: block; filter: grayscale(1) contrast(1.2); mix-blend-mode: multiply; }
+        html:has(#theme-toggle:checked) .retro-img { 
+            filter: grayscale(1) sepia(100%) hue-rotate(50deg) saturate(5) brightness(0.7); 
+            mix-blend-mode: screen; 
+        }
+
+        ul { padding-left: 20px; list-style-type: "[*] "; }
+        .status-bar { border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 10px; font-size: 0.75rem; display: flex; justify-content: space-between; }
+        
+        @media (max-width: 600px) { .container { padding: 1rem; } }
+    </style>
+</head>
+<body>
+
+    <input type="radio" name="nav" id="nav-home" checked>
+    <input type="radio" name="nav" id="nav-projects">
+    <input type="radio" name="nav" id="nav-cv">
+    <input type="checkbox" id="theme-toggle">
+    <input type="radio" name="cv-view" id="tab-all" checked>
+    <input type="radio" name="cv-view" id="tab-eng">
+    <input type="radio" name="cv-view" id="tab-dev">
+
+    <div class="container">
+        
+        <header>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h1>ROBERT PATTON<span class="cursor">_</span></h1>
+                <label for="theme-toggle" style="border: 1px solid var(--border); padding: 5px; cursor: pointer; font-size: 0.7rem;">[TOGGLE_CRT]</label>
+            </div>
+            <p>MEng Engineer // Full-Stack Developer</p>
+            <nav>
+                <label for="nav-home">01_HOME</label>
+                <label for="nav-projects">02_PROJECTS</label>
+                <label for="nav-cv">03_CV</label>
+            </nav>
+        </header>
+
+        <section id="page-home" class="page">
+            <fieldset>
+                <legend>Whoami</legend>
+                {{ home_content }}
+            </fieldset>
+        </section>
+
+        <section id="page-projects" class="page">
+            <h2>> PROJECT_DIRECTORY</h2>
+            <div class="grid">
+                {{ projects_grid }}
+            </div>
+        </section>
+
+        <section id="page-cv" class="page">
+            <div class="cv-tabs" style="margin-bottom: 20px;">
+                <label for="tab-all">EXPANSIVE</label>
+                <label for="tab-eng">ENGINEERING_FOCUS</label>
+                <label for="tab-dev">DEV_FOCUS</label>
+            </div>
+            <fieldset>
+                <legend>Curriculum_Vitae</legend>
+                {{ cv_content }}
+            </fieldset>
+        </section>
+
+        <div class="status-bar">
+            <span>FILE: R_PATTON.SYS</span>
+            <span>BUILD: {{ build_time }}</span>
+            <span>LOC: LONDON_UK</span>
+        </div>
+    </div>
+
+</body>
+</html>
