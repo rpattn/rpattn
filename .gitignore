@@ -5,7 +5,7 @@ __pycache__/
 
 # --- Build Output ---
 # Add 'public/' from here if you want to commit the final HTML manually
-# public/
+public/
 
 # --- OS / IDE ---
 .DS_Store
