@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROBERT PATTON // R_PATTON.SYS</title>
+    <style>
+        /* --- 1. SYSTEM VARIABLES & THEMES --- */
+        :root {
+            --bg: #f4f1ea;
+            --text: #222222;
+            --accent: #d33682;
+            --border: #222222;
+            --shadow: #999999;
+            --crt: rgba(0,0,0,0);
+        }
+
+        /* Logic: Theme Switcher */
+        html:has(#theme-toggle:checked) {
+            --bg: #1a1b1a;
+            --text: #7ed321;
+            --accent: #b5e853;
+            --border: #7ed321;
+            --shadow: #004400;
+            --crt: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                   linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+        }
+
+        /* --- 2. PAGE NAVIGATION LOGIC --- */
+        .page { display: none; }
+        html:has(#nav-home:checked) #page-home { display: block; }
+        html:has(#nav-projects:checked) #page-projects { display: block; }
+        html:has(#nav-cv:checked) #page-cv { display: block; }
+
+        /* CV Sub-filtering */
+        html:has(#tab-eng:checked) .item-dev { display: none; }
+        html:has(#tab-dev:checked) .item-eng { display: none; }
+
+        /* --- 3. CORE AESTHETIC --- */
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+            background-image: var(--crt);
+            background-size: 100% 3px, 3px 100%;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 1rem auto;
+            border: 3px solid var(--border);
+            padding: 2rem;
+            box-shadow: 10px 10px 0px var(--shadow);
+            position: relative;
+        }
+
+        nav { margin: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+        nav label, .cv-tabs label { 
+            cursor: pointer; padding: 4px 8px; border: 1px solid var(--border); font-weight: bold; font-size: 0.9rem;
+        }
+        
+        /* Highlight Active States */
+        html:has(#nav-home:checked) label[for="nav-home"],
+        html:has(#nav-projects:checked) label[for="nav-projects"],
+        html:has(#nav-cv:checked) label[for="nav-cv"],
+        html:has(#tab-all:checked) label[for="tab-all"],
+        html:has(#tab-eng:checked) label[for="tab-eng"],
+        html:has(#tab-dev:checked) label[for="tab-dev"] {
+            background: var(--text); color: var(--bg);
+        }
+
+        input[type="radio"], #theme-toggle { display: none; }
+
+        /* --- 4. LAYOUT COMPONENTS --- */
+        header h1 { margin: 0; font-size: 2.2rem; }
+        .cursor { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        fieldset { border: 2px solid var(--border); margin: 20px 0; padding: 15px; }
+        legend { padding: 0 10px; font-weight: bold; text-transform: uppercase; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { border: 1px solid var(--border); padding: 15px; display: flex; flex-direction: column; }
+        
+        /* Retro Image Styling */
+        .img-container { border: 1px solid var(--border); margin: 10px 0; position: relative; background: #999; overflow: hidden; }
+        .img-container::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 2px; pointer-events: none;
+        }
+        .retro-img { width: 100%; display: block; filter: grayscale(1) contrast(1.2); mix-blend-mode: multiply; }
+        html:has(#theme-toggle:checked) .retro-img { 
+            filter: grayscale(1) sepia(100%) hue-rotate(50deg) saturate(5) brightness(0.7); 
+            mix-blend-mode: screen; 
+        }
+
+        ul { padding-left: 20px; list-style-type: "[*] "; }
+        .status-bar { border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 10px; font-size: 0.75rem; display: flex; justify-content: space-between; }
+        
+        @media (max-width: 600px) { .container { padding: 1rem; } }
+    </style>
+</head>
+<body>
+
+    <input type="radio" name="nav" id="nav-home" checked>
+    <input type="radio" name="nav" id="nav-projects">
+    <input type="radio" name="nav" id="nav-cv">
+    <input type="checkbox" id="theme-toggle">
+    <input type="radio" name="cv-view" id="tab-all" checked>
+    <input type="radio" name="cv-view" id="tab-eng">
+    <input type="radio" name="cv-view" id="tab-dev">
+
+    <div class="container">
+        
+        <header>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h1>ROBERT PATTON<span class="cursor">_</span></h1>
+                <label for="theme-toggle" style="border: 1px solid var(--border); padding: 5px; cursor: pointer; font-size: 0.7rem;">[TOGGLE_CRT]</label>
+            </div>
+            <p>MEng Engineer // Full-Stack Developer</p>
+            <nav>
+                <label for="nav-home">01_HOME</label>
+                <label for="nav-projects">02_PROJECTS</label>
+                <label for="nav-cv">03_CV</label>
+            </nav>
+        </header>
+
+        <section id="page-home" class="page">
+            <fieldset>
+                <legend>Whoami</legend>
+                <h3>&gt; SYSTEM_STATUS: ONLINE</h3>
+<p>Mechanical Engineer and Consultant specializing in <strong>digital tools for the built environment</strong>. I bridge the gap between heavy-duty industrial engineering and modern software delivery.</p>
+<p>Currently delivering engineering and advisory scopes for <strong>Offshore Wind Development at Ramboll</strong>, while building the next generation of industrial asset management tools in my spare time.</p>
+<h4>Core Competencies:</h4>
+<ul>
+<li><strong>Engineering:</strong> Engine Design (PTC Creo), GD&amp;T, FMECA, Fluid Systems.</li>
+<li><strong>Development:</strong> Go (Golang), Python, Next.js, Docker/K8s.</li>
+<li><strong>Research:</strong> Applied Machine Learning &amp; Materials Science (EuroCorr 2025).</li>
+</ul>
+<blockquote>
+<p>"Applying the rigor of safety-critical engineering to the agility of full-stack development."</p>
+</blockquote>
+            </fieldset>
+        </section>
+
+        <section id="page-projects" class="page">
+            <h2>> PROJECT_DIRECTORY</h2>
+            <div class="grid">
+                <div class="card"><h4>WindOps Analysis</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Turbines" loading="lazy">
+</div>
+
+<p>A full-stack web application (Python, Typescript, Docker) enabling non-technical users to run wind plant system design simulations.</p>
+<ul>
+<li><strong>Tech:</strong> Python, React, Docker, NREL WISDEM.</li>
+<li><strong>Result:</strong> Reduced simulation setup time by 80% for engineering consultants.</li>
+</ul></div>
+            </div>
+        </section>
+
+        <section id="page-cv" class="page">
+            <div class="cv-tabs" style="margin-bottom: 20px;">
+                <label for="tab-all">EXPANSIVE</label>
+                <label for="tab-eng">ENGINEERING_FOCUS</label>
+                <label for="tab-dev">DEV_FOCUS</label>
+            </div>
+            <fieldset>
+                <legend>Curriculum_Vitae</legend>
+                <h4>PROFESSIONAL_EXPERIENCE</h4>
+<p><strong>Ramboll | London, UK</strong>
+<em>Graduate Consultant (Offshore Wind)</em> | 2024 - Present</p>
+<ul>
+<li><span class="item-dev">Developed VR-ready full-stack applications to embed CAD models into technical documentation.</span></li>
+<li><span class="item-eng">Led FMECA risk assessments for large-scale offshore wind power plants and facilitated client workshops.</span></li>
+<li><span class="item-dev">Managed Dockerised deployments and CI/CD pipelines on Google Cloud Kubernetes.</span></li>
+<li><span class="item-eng">Delivered technically robust studies for complex, safety-critical energy systems.</span></li>
+</ul>
+<p><strong>Cummins | Darlington, UK</strong>
+<em>Design Engineering Placement</em> | 2022 - 2024</p>
+<ul>
+<li><span class="item-eng">Owned end-to-end development of components for heavy-duty fuel-agnostic engines using PTC Creo.</span></li>
+<li><span class="item-eng">Directed a cross-functional team to resolve critical field issues using 7-Step Root Cause methods.</span></li>
+<li><span class="item-dev">Built Python-based automation tools to post-process FEA/CFD metadata and reduce manual validation time.</span></li>
+</ul>
+<h4>ACADEMIC_RECORD</h4>
+<p><strong>University of Leeds</strong>
+<em>MEng Mechanical Engineering</em> | First-Class Honours (77% Avg)</p>
+<ul>
+<li><strong>Research:</strong> Co-authored paper on erosion-corrosion of AM materials (EuroCorr 2025).</li>
+<li><strong>Dissertation:</strong> Validated prototype medical hardware for Eventum Orthopaedics (78.5%).</li>
+</ul>
+            </fieldset>
+        </section>
+
+        <div class="status-bar">
+            <span>FILE: R_PATTON.SYS</span>
+            <span>BUILD: 2026.02.15 14:23:14</span>
+            <span>LOC: LONDON_UK</span>
+        </div>
+    </div>
+
+</body>
+</html>
