@@ -75,7 +75,17 @@
 
         input[type="radio"], #theme-toggle { display: none; }
 
-                /* CV Sub-filtering */
+        /* If the Engineering tab is checked, hide LIs containing Dev content */
+        html:has(#tab-eng:checked) li:has(.item-dev) { 
+            display: none; 
+        }
+
+        /* If the Dev tab is checked, hide LIs containing Engineering content */
+        html:has(#tab-dev:checked) li:has(.item-eng) { 
+            display: none; 
+        }
+
+        /* Ensure spans themselves are hidden (backup) */
         html:has(#tab-eng:checked) .item-dev { display: none; }
         html:has(#tab-dev:checked) .item-eng { display: none; }
 
@@ -444,7 +454,7 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 
         <section id="page-cv" class="page">
             <div class="cv-tabs" style="margin-bottom: 20px;">
-                <label for="tab-all">EXPANSIVE</label>
+                <label for="tab-all">ALL</label>
                 <label for="tab-eng">ENGINEERING_FOCUS</label>
                 <label for="tab-dev">DEV_FOCUS</label>
             </div>
@@ -547,7 +557,7 @@ MATLAB, Simulink, ANSYS (exposure), CFD/FEA collaboration</p></fieldset>
 
         <div class="status-bar">
             <span>FILE: R_PATTON.SYS</span>
-            <span>BUILD: 2026.02.18 22:40:48</span>
+            <span>BUILD: 2026.02.18 22:44:44</span>
             <span>LOC: LONDON_UK</span>
         </div>
     </div>
