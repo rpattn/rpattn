@@ -42,7 +42,7 @@ def build():
                 tmpl = Template(f.read())
 
             # Auto-refresh meta tag
-            refresh_tag = '<meta http-equiv="refresh" content="2">'
+            refresh_tag = '<meta http-equiv="refresh" content="200">'
 
             output = tmpl.render(
                 home_content=home_html,
