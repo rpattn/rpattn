@@ -27,9 +27,9 @@
 
         /* --- 2. PAGE NAVIGATION & FILTERING --- */
         .page { display: none; }
-        html:has(#nav-home:checked) #page-home { display: block; }
-        html:has(#nav-projects:checked) #page-projects { display: block; }
-        html:has(#nav-cv:checked) #page-cv { display: block; }
+        html:has(#nav-home:checked) #home { display: block; }
+        html:has(#nav-projects:checked) #projects { display: block; }
+        html:has(#nav-cv:checked) #cv { display: block; }
 
         html:has(#tab-eng:checked) .item-dev { display: none; }
         html:has(#tab-dev:checked) .item-eng { display: none; }
@@ -141,7 +141,7 @@
             </nav>
         </header>
 
-        <section id="page-home" class="page">
+        <section id="home" class="page">
             <fieldset>
                 <legend>System_Summary</legend>
                 <p>> STATUS: <strong>Graduate Consultant at Ramboll</strong>.</p>
@@ -156,7 +156,7 @@
             </fieldset>
         </section>
 
-        <section id="page-projects" class="page">
+        <section id="projects" class="page">
             <h2>> PROJECT_LOGS</h2>
             
             <div class="grid">
@@ -198,7 +198,7 @@
             </div>
         </section>
 
-        <section id="page-cv" class="page">
+        <section id="cv" class="page">
             <div class="cv-tabs" style="margin-bottom: 20px;">
                 <label for="tab-all">EXPANSIVE</label>
                 <label for="tab-eng">ENGINEERING_ONLY</label>

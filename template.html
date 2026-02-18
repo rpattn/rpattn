@@ -21,10 +21,10 @@
 
         /* --- 2. PAGE LOGIC --- */
         .page { display: none; animation: pageIn 0.3s ease-out; }
-        #page-home { display: block; }
-        html:has(#page-projects:target) #page-home,
-        html:has(#page-cv:target) #page-home { display: none; }
-        #page-projects:target, #page-cv:target { display: block !important; }
+        #home { display: block; }
+        html:has(#projects:target) #home,
+        html:has(#cv:target) #home { display: none; }
+        #projects:target, #cv:target { display: block !important; }
 
         @keyframes pageIn {
             from { opacity: 0; transform: translateY(4px); }
@@ -90,8 +90,8 @@
         html:has(#tab-dev:checked) .item-eng { display: none; }
 
         html:not(:has(section:target)) nav a[href="#"],
-        html:has(#page-projects:target) nav a[href="#page-projects"],
-        html:has(#page-cv:target) nav a[href="#page-cv"] {
+        html:has(#projects:target) nav a[href="#projects"],
+        html:has(#cv:target) nav a[href="#cv"] {
             background: var(--text); color: var(--bg);
         }
 
@@ -184,23 +184,23 @@
             <p>MEng Engineer // Full-Stack Developer</p>
             <nav>
                 <a href="#">01_HOME</a>
-                <a href="#page-projects">02_PROJECTS</a>
-                <a href="#page-cv">03_CV</a>
+                <a href="#projects">02_PROJECTS</a>
+                <a href="#cv">03_CV</a>
             </nav>
         </header>
 
-        <section id="page-home" class="page">
+        <section id="home" class="page">
             <fieldset><legend>Whoami</legend>{{ home_content }}</fieldset>
         </section>
 
-        <section id="page-projects" class="page">
+        <section id="projects" class="page">
             <h2>> PROJECT_DIRECTORY</h2>
             <div class="grid">
                 {{ projects_grid }}
             </div>
         </section>
 
-        <section id="page-cv" class="page">
+        <section id="cv" class="page">
             <div class="cv-tabs" style="margin-bottom: 20px;">
                 <label for="tab-all">ALL</label>
                 <label for="tab-eng">ENGINEERING_FOCUS</label>
