@@ -1,7 +1,7 @@
 #### Raspberry Pi Prototyping
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/raspberry-pi-board-close-up-4e3r2t1y6u7i8o9p.jpg" alt="Raspberry Pi Board" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Early hands-on projects using Raspberry Pi for basic hardware and software integration.

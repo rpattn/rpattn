@@ -1,7 +1,7 @@
 #### Engineering Simulation API Extension
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/server-rack-data-centre-3f2e1d0c9b8a7s6q.jpg" alt="Server Infrastructure" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Extended a Python-based lifecycle and cost simulation tool to support structured API access and browser-based execution.

@@ -19,13 +19,12 @@
             --scanline: rgba(126, 211, 33, 0.1);
         }
 
-        /* --- 2. NO-JS PAGE LOGIC --- */
+        /* --- 2. PAGE LOGIC --- */
         .page { display: none; animation: pageIn 0.3s ease-out; }
         #page-home { display: block; }
-        html:has(section:target) #page-home,
-        html:has(.card:target) #page-home { display: none; }
+        html:has(#page-projects:target) #page-home,
+        html:has(#page-cv:target) #page-home { display: none; }
         #page-projects:target, #page-cv:target { display: block !important; }
-        html:has(.card:target) #page-projects { display: block !important; }
 
         @keyframes pageIn {
             from { opacity: 0; transform: translateY(4px); }
@@ -40,22 +39,16 @@
         }
 
         .container {
-            max-width: 900px; margin: 1rem auto; border: 3px solid var(--border);
+            max-width: 1000px; margin: 1rem auto; border: 3px solid var(--border);
             padding: 2rem; box-shadow: 10px 10px 0px var(--shadow); position: relative;
             background: var(--bg);
-            overflow: hidden; /* Keeps scanlines inside the border */
+            overflow: hidden;
         }
 
-        /* Scanline Overlay - Masked to Container */
         .container::before {
-            content: " "; 
-            display: none; 
-            position: absolute; 
-            inset: 0; /* Cover the whole container */
+            content: " "; display: none; position: absolute; inset: 0;
             background: linear-gradient(var(--scanline) 50%, transparent 50%);
-            background-size: 100% 6px; 
-            z-index: 10; 
-            pointer-events: none;
+            background-size: 100% 6px; z-index: 10; pointer-events: none;
             animation: move-scanlines 5000s linear infinite;
         }
 
@@ -64,18 +57,13 @@
             to { background-position: 0 100%; }
         }
 
-        /* Enable scanlines only in CRT mode */
-        html:has(#theme-toggle:checked) .container::before {
-            display: block;
-        }
+        html:has(#theme-toggle:checked) .container::before { display: block; }
 
         nav { margin: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; display: flex; gap: 10px; flex-wrap: wrap; }
         nav a { text-decoration: none; color: inherit; cursor: pointer; padding: 4px 8px; border: 1px solid var(--border); font-weight: bold; font-size: 0.9rem; }
 
         html:not(:has(section:target)) nav a[href="#"],
-        html:has(#page-home:target) nav a[href="#"],
         html:has(#page-projects:target) nav a[href="#page-projects"],
-        html:has(.card:target) nav a[href="#page-projects"],
         html:has(#page-cv:target) nav a[href="#page-cv"] {
             background: var(--text); color: var(--bg);
         }
@@ -87,27 +75,66 @@
         fieldset { border: 2px solid var(--border); margin: 20px 0; padding: 15px; position: relative; z-index: 1; }
         legend { padding: 0 10px; font-weight: bold; text-transform: uppercase; background: var(--bg); }
 
-        /* --- 4. GRID & IMAGES --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { border: 1px solid var(--border); padding: 15px; transition: transform 0.2s; background: var(--bg); }
-        
-        .card img {
-            max-width: 100%;
-            height: auto;
+        /* --- 4. STABLE MASONRY GRID --- */
+        .grid { 
+            column-count: 3;
+            column-gap: 20px;
+            width: 100%;
+        }
+
+        @media (max-width: 900px) { .grid { column-count: 2; } }
+        @media (max-width: 600px) { .grid { column-count: 1; } }
+
+        .card-wrapper {
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 20px;
+            break-inside: avoid;
+        }
+
+        .card-toggle { display: none; }
+
+        .card { 
             display: block;
-            margin: 10px 0;
-            border: 1px solid var(--border);
-            filter: grayscale(1);
+            border: 1px solid var(--border); 
+            padding: 15px; 
+            background: var(--bg);
+            overflow: hidden;
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+            /* Large preview height */
+            max-height: 600px; 
+            transition: max-height 0.6s cubic-bezier(0.19, 1, 0.22, 1), border-color 0.3s;
+        }
+
+        /* Expansion State */
+        .card-toggle:checked + .card { 
+            max-height: 4000px; 
+            border-color: var(--accent);
+            border-width: 2px;
+            cursor: default;
+        }
+
+        /* Fade-out effect */
+        .card::after {
+            content: "[ CLICK_TO_EXPAND ]";
+            font-size: 0.65rem; display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 10px; position: absolute; bottom: 0; left: 0; right: 0;
+            height: 120px; background: linear-gradient(transparent, var(--bg) 85%);
+            pointer-events: none; transition: opacity 0.3s;
+            z-index: 2;
+        }
+
+        .card-toggle:checked + .card::after { opacity: 0; }
+
+        .card img {
+            max-width: 100%; height: auto; display: block; margin: 10px 0;
+            border: 1px solid var(--border); filter: grayscale(1);
         }
 
         html:has(#theme-toggle:checked) .card img {
             filter: grayscale(1) sepia(1) hue-rotate(50deg) saturate(5) brightness(0.8);
-        }
-
-        .card:target { 
-            border: 2px solid var(--accent); 
-            box-shadow: 0 0 15px var(--accent);
-            transform: scale(1.02);
         }
 
         .status-bar { border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 10px; font-size: 0.75rem; display: flex; justify-content: space-between; }
@@ -133,10 +160,7 @@
         </header>
 
         <section id="page-home" class="page">
-            <fieldset>
-                <legend>Whoami</legend>
-                {{ home_content }}
-            </fieldset>
+            <fieldset><legend>Whoami</legend>{{ home_content }}</fieldset>
         </section>
 
         <section id="page-projects" class="page">
@@ -147,10 +171,7 @@
         </section>
 
         <section id="page-cv" class="page">
-            <fieldset>
-                <legend>Curriculum_Vitae</legend>
-                {{ cv_content }}
-            </fieldset>
+            <fieldset><legend>Curriculum_Vitae</legend>{{ cv_content }}</fieldset>
         </section>
 
         <div class="status-bar">
@@ -159,6 +180,5 @@
             <span>LOC: LONDON_UK</span>
         </div>
     </div>
-
 </body>
 </html>

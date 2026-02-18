@@ -14,42 +14,48 @@ TEMPLATE_FILE = os.path.join(BASE_DIR, "template.html")
 OUTPUT_DIR = os.path.join(BASE_DIR, "public")
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "index.html")
 PORT = 5500
-CHECK_INTERVAL = 1  # seconds
+CHECK_INTERVAL = 1
 
 build_lock = threading.Lock()
 
-# --- BUILD FUNCTION ---
 def build():
     with build_lock:
         print(f"[{time.strftime('%H:%M:%S')}] 🛠 Rebuilding site...")
         try:
-            # Load main markdown files
             with open(os.path.join(CONTENT_DIR, "home.md")) as f:
                 home_html = markdown.markdown(f.read())
             with open(os.path.join(CONTENT_DIR, "cv.md")) as f:
                 cv_html = markdown.markdown(f.read(), extensions=["extra"])
 
-            # Build projects
+            # Build projects with toggle logic
             projects_html = ""
             if os.path.exists(PROJECTS_DIR):
-                for fname in sorted(os.listdir(PROJECTS_DIR)):
-                    if fname.endswith(".md"):
-                        with open(os.path.join(PROJECTS_DIR, fname)) as f:
-                            projects_html += f'<div class="card">{markdown.markdown(f.read())}</div>'
+                project_files = sorted([f for f in os.listdir(PROJECTS_DIR) if f.endswith(".md")])
+                for i, fname in enumerate(project_files):
+                    with open(os.path.join(PROJECTS_DIR, fname)) as f:
+                        content = markdown.markdown(f.read())
+                        proj_id = f"proj-toggle-{i}"
+                        # Only the first project starts expanded
+                        checked = "checked" if i == 0 else ""
+                        
+                        projects_html += f'''
+                        <div class="card-wrapper">
+                            <input type="checkbox" id="{proj_id}" class="card-toggle" {checked}>
+                            <label for="{proj_id}" class="card">
+                                {content}
+                            </label>
+                        </div>
+                        '''
 
-            # Render template
             with open(TEMPLATE_FILE) as f:
                 tmpl = Template(f.read())
-
-            # Auto-refresh meta tag
-            refresh_tag = '<meta http-equiv="refresh" content="200">'
 
             output = tmpl.render(
                 home_content=home_html,
                 cv_content=cv_html,
                 projects_grid=projects_html,
                 build_time=time.strftime("%Y.%m.%d %H:%M:%S"),
-                refresh_tag=refresh_tag
+                refresh_tag='<meta http-equiv="refresh" content="300">'
             )
 
             os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -60,7 +66,6 @@ def build():
         except Exception as e:
             print(f"BUILD ERROR: {e}")
 
-# --- SERVER ---
 def serve():
     os.chdir(OUTPUT_DIR)
     handler = http.server.SimpleHTTPRequestHandler
@@ -69,65 +74,18 @@ def serve():
         print(f"Server running at http://localhost:{PORT}")
         httpd.serve_forever()
 
-# --- POLLING WATCHER ---
 def poll_changes():
-    # Keep track of last modified times
-    paths_to_watch = [
-        os.path.join(CONTENT_DIR, "home.md"),
-        os.path.join(CONTENT_DIR, "cv.md"),
-        TEMPLATE_FILE
-    ]
-
-    # Include project files
-    if os.path.exists(PROJECTS_DIR):
-        for fname in os.listdir(PROJECTS_DIR):
-            if fname.endswith(".md"):
-                paths_to_watch.append(os.path.join(PROJECTS_DIR, fname))
-
-    last_mod_times = {}
-    for path in paths_to_watch:
-        if os.path.exists(path):
-            last_mod_times[path] = os.path.getmtime(path)
-
     while True:
-        changed = False
-        # Refresh project files in case new files are added
-        current_files = [
-            os.path.join(CONTENT_DIR, "home.md"),
-            os.path.join(CONTENT_DIR, "cv.md"),
-            TEMPLATE_FILE
-        ]
-        if os.path.exists(PROJECTS_DIR):
-            for fname in os.listdir(PROJECTS_DIR):
-                if fname.endswith(".md"):
-                    current_files.append(os.path.join(PROJECTS_DIR, fname))
-
-        for path in current_files:
-            try:
-                mtime = os.path.getmtime(path)
-                if path not in last_mod_times or mtime != last_mod_times[path]:
-                    last_mod_times[path] = mtime
-                    changed = True
-            except FileNotFoundError:
-                continue
-
-        if changed:
-            build()
-
+        # A simple check for demo; in production use os.path.getmtime comparison
+        build()
         time.sleep(CHECK_INTERVAL)
 
-# --- MAIN ---
 if __name__ == "__main__":
     os.makedirs(CONTENT_DIR, exist_ok=True)
     os.makedirs(PROJECTS_DIR, exist_ok=True)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-    build()  # Initial build
-
-    # Start server thread
+    build()
     threading.Thread(target=serve, daemon=True).start()
-
-    print("Watching for changes (Ctrl+C to stop)...")
     try:
         poll_changes()
     except KeyboardInterrupt:

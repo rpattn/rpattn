@@ -1,7 +1,7 @@
 #### Early Game Engine Experiments
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/retro-pixel-game-grid-1q2w3e4r5t6y7u8i.jpg" alt="Retro Game Engine Grid" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Developed small-scale games and physics simulations from first principles.

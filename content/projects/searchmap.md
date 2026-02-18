@@ -1,7 +1,7 @@
 #### Search Map
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/city-map-grid-overlay-6h5g4f3d2s1a9q8w.jpg" alt="Map Data Interface" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Cloud-backed mapping tool to search, filter and persist location data using Google Maps APIs.

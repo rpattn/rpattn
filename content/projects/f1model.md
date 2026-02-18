@@ -1,7 +1,7 @@
 #### McLaren F1 Performance Model
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/supercar-aerodynamics-technical-7g6f5d4s3a2q1w0e.jpg" alt="Performance Vehicle Modelling" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Independent vehicle performance modelling study estimating top speed, acceleration, braking distance and cornering limits using publicly available specifications.

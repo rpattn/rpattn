@@ -1,7 +1,7 @@
 #### NextCMMS
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/factory-interior-steel-structure-9d8n8l8e0m1s3w9f.jpg" alt="Industrial Maintenance System" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Centralised maintenance management platform designed for industrial assets.

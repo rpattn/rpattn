@@ -1,7 +1,7 @@
 #### Erosion–Corrosion ML Study
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/metal-texture-close-up-8f3k2l1m0n9p7q6r.jpg" alt="Materials Surface Analysis" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Extended a Masters research project investigating degradation behaviour in additively manufactured alloys.

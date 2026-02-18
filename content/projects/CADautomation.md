@@ -1,7 +1,7 @@
 #### CAD Automation & Metadata Pipeline
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/technical-blueprint-overlay-5t4r3e2w1q9a8s7d.jpg" alt="CAD Data Processing" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Automation tooling to extract structured metadata from parametric CAD models and prepare assets for downstream digital integration.

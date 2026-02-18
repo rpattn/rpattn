@@ -1,7 +1,7 @@
 #### Medical Device Validation Study
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/medical-device-prototype-assembly-4r5t6y7u8i9o0p1a.jpg" alt="Medical Device Prototype" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Industry-linked dissertation in collaboration with Eventum Orthopaedics to investigate and validate a novel medical device.

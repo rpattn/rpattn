@@ -1,7 +1,7 @@
 #### Truss Bridge Stress Analysis Tool
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/steel-truss-bridge-structure-9f8e7d6c5b4a3s2q.jpg" alt="Steel Truss Structure" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Extended a first-year structural mechanics brief by developing a MATLAB GUI for truss analysis.

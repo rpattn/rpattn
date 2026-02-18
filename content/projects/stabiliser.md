@@ -1,7 +1,7 @@
 #### Composite Stabiliser FEA Study
 
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/helicopter-tail-structure-2k8l7m6n5b4v3c2x.jpg" alt="Aircraft Stabiliser Structure" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
 
 Finite element analysis of a Robinson R22 horizontal stabiliser under defined flight loading conditions.
