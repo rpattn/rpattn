@@ -4,118 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROBERT PATTON // R_PATTON.SYS</title>
+    <meta http-equiv="refresh" content="200">
     <style>
-        /* --- 1. SYSTEM VARIABLES & THEMES --- */
+        /* --- 1. SYSTEM VARIABLES --- */
         :root {
-            --bg: #f4f1ea;
-            --text: #222222;
-            --accent: #d33682;
-            --border: #222222;
-            --shadow: #999999;
-            --crt: rgba(0,0,0,0);
+            --bg: #f4f1ea; --text: #222222; --accent: #d33682;
+            --border: #222222; --shadow: #999999;
+            --scanline: transparent;
         }
 
-        /* Logic: Theme Switcher */
         html:has(#theme-toggle:checked) {
-            --bg: #1a1b1a;
-            --text: #7ed321;
-            --accent: #b5e853;
-            --border: #7ed321;
-            --shadow: #004400;
-            --crt: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                   linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            --bg: #1a1b1a; --text: #7ed321; --accent: #b5e853;
+            --border: #7ed321; --shadow: #004400;
+            --scanline: rgba(126, 211, 33, 0.1);
         }
 
-        /* --- 2. PAGE NAVIGATION LOGIC --- */
-        .page { display: none; }
-        html:has(#nav-home:checked) #page-home { display: block; }
-        html:has(#nav-projects:checked) #page-projects { display: block; }
-        html:has(#nav-cv:checked) #page-cv { display: block; }
+        /* --- 2. NO-JS PAGE LOGIC --- */
+        .page { display: none; animation: pageIn 0.3s ease-out; }
+        #page-home { display: block; }
+        html:has(section:target) #page-home,
+        html:has(.card:target) #page-home { display: none; }
+        #page-projects:target, #page-cv:target { display: block !important; }
+        html:has(.card:target) #page-projects { display: block !important; }
 
-        /* CV Sub-filtering */
-        html:has(#tab-eng:checked) .item-dev { display: none; }
-        html:has(#tab-dev:checked) .item-eng { display: none; }
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         /* --- 3. CORE AESTHETIC --- */
         body {
             font-family: 'Courier New', Courier, monospace;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 10px;
-            background-image: var(--crt);
-            background-size: 100% 3px, 3px 100%;
-            line-height: 1.4;
+            background-color: var(--bg); color: var(--text);
+            margin: 0; padding: 10px; line-height: 1.4;
         }
 
         .container {
-            max-width: 900px;
-            margin: 1rem auto;
-            border: 3px solid var(--border);
-            padding: 2rem;
-            box-shadow: 10px 10px 0px var(--shadow);
-            position: relative;
+            max-width: 900px; margin: 1rem auto; border: 3px solid var(--border);
+            padding: 2rem; box-shadow: 10px 10px 0px var(--shadow); position: relative;
+            background: var(--bg);
+            overflow: hidden; /* Keeps scanlines inside the border */
+        }
+
+        /* Scanline Overlay - Masked to Container */
+        .container::before {
+            content: " "; 
+            display: none; 
+            position: absolute; 
+            inset: 0; /* Cover the whole container */
+            background: linear-gradient(var(--scanline) 50%, transparent 50%);
+            background-size: 100% 6px; 
+            z-index: 10; 
+            pointer-events: none;
+            animation: move-scanlines 5000s linear infinite;
+        }
+
+        @keyframes move-scanlines {
+            from { background-position: 0 0; }
+            to { background-position: 0 100%; }
+        }
+
+        /* Enable scanlines only in CRT mode */
+        html:has(#theme-toggle:checked) .container::before {
+            display: block;
         }
 
         nav { margin: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; display: flex; gap: 10px; flex-wrap: wrap; }
-        nav label, .cv-tabs label { 
-            cursor: pointer; padding: 4px 8px; border: 1px solid var(--border); font-weight: bold; font-size: 0.9rem;
-        }
-        
-        /* Highlight Active States */
-        html:has(#nav-home:checked) label[for="nav-home"],
-        html:has(#nav-projects:checked) label[for="nav-projects"],
-        html:has(#nav-cv:checked) label[for="nav-cv"],
-        html:has(#tab-all:checked) label[for="tab-all"],
-        html:has(#tab-eng:checked) label[for="tab-eng"],
-        html:has(#tab-dev:checked) label[for="tab-dev"] {
+        nav a { text-decoration: none; color: inherit; cursor: pointer; padding: 4px 8px; border: 1px solid var(--border); font-weight: bold; font-size: 0.9rem; }
+
+        html:not(:has(section:target)) nav a[href="#"],
+        html:has(#page-home:target) nav a[href="#"],
+        html:has(#page-projects:target) nav a[href="#page-projects"],
+        html:has(.card:target) nav a[href="#page-projects"],
+        html:has(#page-cv:target) nav a[href="#page-cv"] {
             background: var(--text); color: var(--bg);
         }
 
-        input[type="radio"], #theme-toggle { display: none; }
-
-        /* --- 4. LAYOUT COMPONENTS --- */
         header h1 { margin: 0; font-size: 2.2rem; }
         .cursor { animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        fieldset { border: 2px solid var(--border); margin: 20px 0; padding: 15px; }
-        legend { padding: 0 10px; font-weight: bold; text-transform: uppercase; }
+        fieldset { border: 2px solid var(--border); margin: 20px 0; padding: 15px; position: relative; z-index: 1; }
+        legend { padding: 0 10px; font-weight: bold; text-transform: uppercase; background: var(--bg); }
 
+        /* --- 4. GRID & IMAGES --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { border: 1px solid var(--border); padding: 15px; display: flex; flex-direction: column; }
+        .card { border: 1px solid var(--border); padding: 15px; transition: transform 0.2s; background: var(--bg); }
         
-        /* Retro Image Styling */
-        .img-container { border: 1px solid var(--border); margin: 10px 0; position: relative; background: #999; overflow: hidden; }
-        .img-container::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
-            background-size: 100% 2px; pointer-events: none;
-        }
-        .retro-img { width: 100%; display: block; filter: grayscale(1) contrast(1.2); mix-blend-mode: multiply; }
-        html:has(#theme-toggle:checked) .retro-img { 
-            filter: grayscale(1) sepia(100%) hue-rotate(50deg) saturate(5) brightness(0.7); 
-            mix-blend-mode: screen; 
+        .card img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+            filter: grayscale(1);
         }
 
-        ul { padding-left: 20px; list-style-type: "[*] "; }
+        html:has(#theme-toggle:checked) .card img {
+            filter: grayscale(1) sepia(1) hue-rotate(50deg) saturate(5) brightness(0.8);
+        }
+
+        .card:target { 
+            border: 2px solid var(--accent); 
+            box-shadow: 0 0 15px var(--accent);
+            transform: scale(1.02);
+        }
+
         .status-bar { border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 10px; font-size: 0.75rem; display: flex; justify-content: space-between; }
-        
-        @media (max-width: 600px) { .container { padding: 1rem; } }
+        #theme-toggle { display: none; }
     </style>
 </head>
 <body>
 
-    <input type="radio" name="nav" id="nav-home" checked>
-    <input type="radio" name="nav" id="nav-projects">
-    <input type="radio" name="nav" id="nav-cv">
     <input type="checkbox" id="theme-toggle">
-    <input type="radio" name="cv-view" id="tab-all" checked>
-    <input type="radio" name="cv-view" id="tab-eng">
-    <input type="radio" name="cv-view" id="tab-dev">
 
     <div class="container">
-        
         <header>
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <h1>ROBERT PATTON<span class="cursor">_</span></h1>
@@ -123,9 +126,9 @@
             </div>
             <p>MEng Engineer // Full-Stack Developer</p>
             <nav>
-                <label for="nav-home">01_HOME</label>
-                <label for="nav-projects">02_PROJECTS</label>
-                <label for="nav-cv">03_CV</label>
+                <a href="#">01_HOME</a>
+                <a href="#page-projects">02_PROJECTS</a>
+                <a href="#page-cv">03_CV</a>
             </nav>
         </header>
 
@@ -133,16 +136,35 @@
             <fieldset>
                 <legend>Whoami</legend>
                 <h3>&gt; SYSTEM_STATUS: ONLINE</h3>
-<p>Mechanical Engineer and Consultant specializing in <strong>digital tools for the built environment</strong>. I bridge the gap between heavy-duty industrial engineering and modern software delivery.</p>
-<p>Currently delivering engineering and advisory scopes for <strong>Offshore Wind Development at Ramboll</strong>, while building the next generation of industrial asset management tools in my spare time.</p>
-<h4>Core Competencies:</h4>
-<ul>
-<li><strong>Engineering:</strong> Engine Design (PTC Creo), GD&amp;T, FMECA, Fluid Systems.</li>
-<li><strong>Development:</strong> Go (Golang), Python, Next.js, Docker/K8s.</li>
-<li><strong>Research:</strong> Applied Machine Learning &amp; Materials Science (EuroCorr 2025).</li>
-</ul>
+<p>Mechanical Engineer and Consultant working on digital tools for complex physical systems.</p>
+<p>Based in London.<br />
+Offshore Wind Development.<br />
+Full-stack engineering in parallel.</p>
+<hr />
+<h4>&gt; ABOUT</h4>
+<p>I design mechanical systems and build the software that supports them.</p>
+<p>My background is in regulated engine development and safety-critical hardware.<br />
+Today, I apply the same discipline to simulation tooling, asset management platforms, and engineering web applications.</p>
+<p>Clear requirements.<br />
+Defined failure modes.<br />
+Traceable outputs.<br />
+Deployable systems.</p>
+<hr />
+<h4>&gt; CURRENT_WORK</h4>
+<p>Offshore wind engineering and advisory scopes.</p>
+<p>Risk modelling (FMECA).<br />
+Lifecycle and cost analysis.<br />
+Digital workflow development.</p>
+<p>Alongside independent development of industrial software tools.</p>
+<hr />
+<h4>&gt; STACK</h4>
+<p>Engineering:<br />
+Creo, GD&amp;T, fluid systems, validation, structured root cause.</p>
+<p>Development:<br />
+Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
+<hr />
 <blockquote>
-<p>"Applying the rigor of safety-critical engineering to the agility of full-stack development."</p>
+<p>Applying safety-critical engineering discipline to production software.</p>
 </blockquote>
             </fieldset>
         </section>
@@ -150,56 +172,276 @@
         <section id="page-projects" class="page">
             <h2>> PROJECT_DIRECTORY</h2>
             <div class="grid">
-                <div class="card"><h4>WindOps Analysis</h4>
+                <div class="card"><h4>CAD Automation &amp; Metadata Pipeline</h4>
 <div class="img-container">
-    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Turbines" loading="lazy">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/technical-blueprint-overlay-5t4r3e2w1q9a8s7d.jpg" alt="CAD Data Processing" loading="lazy">
 </div>
 
-<p>A full-stack web application (Python, Typescript, Docker) enabling non-technical users to run wind plant system design simulations.</p>
+<p>Automation tooling to extract structured metadata from parametric CAD models and prepare assets for downstream digital integration.</p>
+<p>Parsed geometry properties, part hierarchies and naming conventions to generate consistent identifiers and structured data outputs. Reduced manual processing required for documentation and 3D embedding workflows.</p>
+<p>Designed for repeatability across multiple design iterations.</p>
 <ul>
-<li><strong>Tech:</strong> Python, React, Docker, NREL WISDEM.</li>
-<li><strong>Result:</strong> Reduced simulation setup time by 80% for engineering consultants.</li>
+<li><strong>Tech:</strong> Python, CAD APIs, data transformation scripts.</li>
+<li><strong>Result:</strong> Significantly reduced manual engineering documentation time and improved consistency between design revisions.</li>
+</ul></div><div class="card"><h4>FEA Sandbox</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/structural-truss-geometry-4k2l9m8n7b6v5c3x.jpg" alt="Finite Element Model" loading="lazy">
+</div>
+
+<p>Browser-based playground for building 2D node-element structural models.</p>
+<p>Users can define nodes, apply loads and boundary conditions, and visualise structural response. Intermediate stiffness matrices and system equations are surfaced to connect mathematical formulation to structural behaviour.</p>
+<ul>
+<li><strong>Tech:</strong> TypeScript, Canvas API, linear algebra routines.</li>
+<li><strong>Result:</strong> Educational tool bridging first-principles mechanics and computational implementation.</li>
+</ul></div><div class="card"><h4>Engineering Simulation API Extension</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/server-rack-data-centre-3f2e1d0c9b8a7s6q.jpg" alt="Server Infrastructure" loading="lazy">
+</div>
+
+<p>Extended a Python-based lifecycle and cost simulation tool to support structured API access and browser-based execution.</p>
+<p>Refactored monolithic scripts into modular services. Exposed parameterised simulation runs through REST endpoints and implemented input validation to prevent invalid engineering cases.</p>
+<p>Built a lightweight front-end interface to allow non-technical colleagues to run and compare scenarios without modifying source code.</p>
+<ul>
+<li><strong>Tech:</strong> Python, FastAPI, Docker, TypeScript.</li>
+<li><strong>Result:</strong> Increased internal adoption by removing scripting barriers and standardising simulation configuration.</li>
+</ul></div><div class="card"><h4>Digital Design Manager</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-blueprint-drawing-table-3s8d7f6g5h4j2k1l.jpg" alt="Interactive CAD Documentation" loading="lazy">
+</div>
+
+<p>Interactive technical documentation platform embedding CAD models directly into browser and desktop environments.</p>
+<p>Built automated pipelines to convert parametric CAD files into lightweight 3D web assets. Integrated metadata extraction to bind geometry to structured documentation and inspection data.</p>
+<p>Desktop distribution via Electron. VR-ready architecture.</p>
+<ul>
+<li><strong>Tech:</strong> Next.js, Three.js, Electron, Python automation scripts.</li>
+<li><strong>Result:</strong> Reduced manual documentation overhead and improved client-side technical clarity.</li>
+</ul></div><div class="card"><h4>Early Game Engine Experiments</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/retro-pixel-game-grid-1q2w3e4r5t6y7u8i.jpg" alt="Retro Game Engine Grid" loading="lazy">
+</div>
+
+<p>Developed small-scale games and physics simulations from first principles.</p>
+<p>Built simple rendering loops, collision detection systems and state management logic in Java and Unity (C#). Recreated existing games, then extended them with additional mechanics to explore system design and optimisation.</p>
+<p>Introduced early exposure to event-driven architecture and debugging complex interactive behaviour.</p>
+<ul>
+<li><strong>Tech:</strong> Java, C#, Unity.</li>
+<li><strong>Result:</strong> Built foundational understanding of system logic, rendering pipelines and performance constraints.</li>
+</ul></div><div class="card"><h4>Erosion–Corrosion ML Study</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/metal-texture-close-up-8f3k2l1m0n9p7q6r.jpg" alt="Materials Surface Analysis" loading="lazy">
+</div>
+
+<p>Extended a Masters research project investigating degradation behaviour in additively manufactured alloys.</p>
+<p>Curated experimental datasets and trained supervised machine learning models to predict erosion–corrosion response under varying conditions. Analysed feature sensitivity to interpret material performance drivers.</p>
+<ul>
+<li><strong>Tech:</strong> Python, scikit-learn, data preprocessing pipelines.</li>
+<li><strong>Result:</strong> Co-authored paper presented at EuroCorr 2025 demonstrating how data-driven methods complement traditional materials engineering.</li>
+</ul></div><div class="card"><h4>Medical Device Validation Study</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/medical-device-prototype-assembly-4r5t6y7u8i9o0p1a.jpg" alt="Medical Device Prototype" loading="lazy">
+</div>
+
+<p>Industry-linked dissertation in collaboration with Eventum Orthopaedics to investigate and validate a novel medical device.</p>
+<p>Defined applicable regulatory and performance standards. Designed and executed experimental procedures to verify structural integrity, functional reliability and safety margins.</p>
+<p>Analysed test data statistically to assess repeatability and compliance with performance claims.</p>
+<ul>
+<li><strong>Tech:</strong> Experimental design, mechanical testing, statistical analysis.</li>
+<li><strong>Result:</strong> Produced validated performance evidence supporting product development decisions (78.5% dissertation grade).</li>
+</ul></div><div class="card"><h4>McLaren F1 Performance Model</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/supercar-aerodynamics-technical-7g6f5d4s3a2q1w0e.jpg" alt="Performance Vehicle Modelling" loading="lazy">
+</div>
+
+<p>Independent vehicle performance modelling study estimating top speed, acceleration, braking distance and cornering limits using publicly available specifications.</p>
+<p>Developed a longitudinal dynamics model incorporating aerodynamic drag, rolling resistance, traction limits and gear ratio constraints. Extended the model in Simulink to capture transient gear-change behaviour and drivetrain torque interruption.</p>
+<p>Compared steady-state and transient predictions to assess sensitivity to gear shift modelling.</p>
+<ul>
+<li><strong>Tech:</strong> MATLAB, Simulink, vehicle dynamics modelling.</li>
+<li><strong>Result:</strong> Improved prediction accuracy by modelling transient drivetrain effects; achieved additional academic credit for analytical depth.</li>
+</ul></div><div class="card"><h4>NextCMMS</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/factory-interior-steel-structure-9d8n8l8e0m1s3w9f.jpg" alt="Industrial Maintenance System" loading="lazy">
+</div>
+
+<p>Centralised maintenance management platform designed for industrial assets.</p>
+<p>Developed a hybrid relational + EAV schema to support both structured equipment hierarchies and flexible metadata. Implemented revision tracking, role-based access control, and auditability as first-class features.</p>
+<p>Designed to integrate 3D model references and IoT metering streams.</p>
+<ul>
+<li><strong>Tech:</strong> Go (Golang), PostgreSQL, Next.js, OAuth2, Docker.</li>
+<li><strong>Result:</strong> Created a scalable foundation for asset tracking, maintenance scheduling, and long-term lifecycle analysis.</li>
+</ul></div><div class="card"><h4>Raspberry Pi Prototyping</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/raspberry-pi-board-close-up-4e3r2t1y6u7i8o9p.jpg" alt="Raspberry Pi Board" loading="lazy">
+</div>
+
+<p>Early hands-on projects using Raspberry Pi for basic hardware and software integration.</p>
+<p>Worked with Python, GPIO inputs/outputs and simple game mechanics. Built small interactive programs to interface with physical components.</p>
+<p>Focused on understanding how software interacts with real hardware constraints.</p>
+<ul>
+<li><strong>Tech:</strong> Python, GPIO, Linux environment.</li>
+<li><strong>Result:</strong> Developed practical intuition for debugging hardware–software interactions.</li>
+</ul></div><div class="card"><h4>Search Map</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/city-map-grid-overlay-6h5g4f3d2s1a9q8w.jpg" alt="Map Data Interface" loading="lazy">
+</div>
+
+<p>Cloud-backed mapping tool to search, filter and persist location data using Google Maps APIs.</p>
+<p>Built structured queries over places data (name, type, radius, coordinates), with server-side filtering and persistent storage. Implemented export functionality for downstream sales and logistics workflows.</p>
+<p>Originally developed to automate wholesale customer identification during COVID lockdown restrictions.</p>
+<ul>
+<li><strong>Tech:</strong> Google Maps API, JavaScript, cloud database, REST endpoints.</li>
+<li><strong>Result:</strong> Reduced manual prospecting time by ~120 hours compared to spreadsheet-based search workflows.</li>
+</ul></div><div class="card"><h4>Composite Stabiliser FEA Study</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/helicopter-tail-structure-2k8l7m6n5b4v3c2x.jpg" alt="Aircraft Stabiliser Structure" loading="lazy">
+</div>
+
+<p>Finite element analysis of a Robinson R22 horizontal stabiliser under defined flight loading conditions.</p>
+<p>Developed the model incrementally — beginning with simplified isotropic assumptions and progressing to layered composite definitions. Applied aerodynamic load cases and constrained boundary conditions representative of mounting interfaces.</p>
+<p>Automated ply orientation optimisation using Python to evaluate stiffness, stress distribution and mass trade-offs.</p>
+<ul>
+<li><strong>Tech:</strong> ANSYS, Python optimisation scripts.</li>
+<li><strong>Result:</strong> Demonstrated improved structural response through automated layup optimisation while maintaining weight constraints.</li>
+</ul></div><div class="card"><h4>Truss Bridge Stress Analysis Tool</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/steel-truss-bridge-structure-9f8e7d6c5b4a3s2q.jpg" alt="Steel Truss Structure" loading="lazy">
+</div>
+
+<p>Extended a first-year structural mechanics brief by developing a MATLAB GUI for truss analysis.</p>
+<p>Users define nodal coordinates, member connectivity, cross-sectional limits and applied loads. The tool assembles global stiffness matrices, solves for nodal displacements and computes member stresses.</p>
+<p>Visual output includes colour-coded stress states and utilisation ratios.</p>
+<ul>
+<li><strong>Tech:</strong> MATLAB, matrix methods, GUI development.</li>
+<li><strong>Result:</strong> Provided clear visual linkage between stiffness matrix formulation and physical stress behaviour.</li>
+</ul></div><div class="card"><h4>Impulse Turbine Optimisation</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/water-turbine-runner-close-up-8s7d6f5g4h3j2k1l.jpg" alt="Impulse Turbine Runner" loading="lazy">
+</div>
+
+<p>First-principles modelling of an impulse water turbine to maximise power extraction for a defined head–pressure curve.</p>
+<p>Derived governing equations for jet velocity, bucket impulse transfer and rotational dynamics. Modelled nozzle geometry, bucket shape and gearbox ratios to identify optimal operating conditions under varying flow regimes.</p>
+<p>Transient response simulated in Simulink to assess stability and startup behaviour.</p>
+<ul>
+<li><strong>Tech:</strong> MATLAB, Simulink, analytical modelling.</li>
+<li><strong>Result:</strong> Identified optimal geometric parameters and transmission ratios, improving predicted efficiency and validating against theoretical limits.</li>
+</ul></div><div class="card"><h4>WindOps Analysis</h4>
+<div class="img-container">
+    <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
+</div>
+
+<p>Full-stack web application enabling non-technical users to run wind plant system design simulations using NREL system models.</p>
+<p>Built a structured interface over complex engineering models (WOMBAT / ORBIT), transforming raw outputs into decision-ready KPIs, cost breakdowns and Gantt schedules.</p>
+<ul>
+<li><strong>Tech:</strong> Python, TypeScript, React, Docker, REST APIs.</li>
+<li><strong>Result:</strong> Reduced simulation setup time by ~80% for engineering consultants and standardised model execution workflows.</li>
 </ul></div>
             </div>
         </section>
 
         <section id="page-cv" class="page">
-            <div class="cv-tabs" style="margin-bottom: 20px;">
-                <label for="tab-all">EXPANSIVE</label>
-                <label for="tab-eng">ENGINEERING_FOCUS</label>
-                <label for="tab-dev">DEV_FOCUS</label>
-            </div>
             <fieldset>
                 <legend>Curriculum_Vitae</legend>
                 <h4>PROFESSIONAL_EXPERIENCE</h4>
-<p><strong>Ramboll | London, UK</strong>
-<em>Graduate Consultant (Offshore Wind)</em> | 2024 - Present</p>
+<p><strong>Ramboll | London, UK</strong><br />
+<em>Graduate Consultant (Offshore Wind Development)</em> | 2024 – Present</p>
 <ul>
-<li><span class="item-dev">Developed VR-ready full-stack applications to embed CAD models into technical documentation.</span></li>
-<li><span class="item-eng">Led FMECA risk assessments for large-scale offshore wind power plants and facilitated client workshops.</span></li>
-<li><span class="item-dev">Managed Dockerised deployments and CI/CD pipelines on Google Cloud Kubernetes.</span></li>
-<li><span class="item-eng">Delivered technically robust studies for complex, safety-critical energy systems.</span></li>
+<li>
+<p><span class="item-eng">Delivered engineering and advisory scopes across offshore wind projects, contributing to mechanical system definition, interface coordination, and technical documentation for large-scale infrastructure.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Led FMECA workshops for complex mechanical systems, identifying critical failure modes, quantifying risk, and aligning mitigation strategies with inspection and maintenance planning.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Developed lifecycle and cost modelling tools in Python to support asset optimisation and long-term operational decision-making.</span></p>
+</li>
+<li>
+<p><span class="item-dev">Designed and built a VR-ready documentation platform embedding parametric CAD models into interactive web and desktop applications (Next.js, Three.js, Electron).</span></p>
+</li>
+<li>
+<p><span class="item-dev">Created automated pipelines to convert CAD geometry into lightweight 3D assets, including metadata extraction and structured document integration.</span></p>
+</li>
+<li>
+<p><span class="item-dev">Extended internal engineering simulation tools with REST APIs and browser-based interfaces, enabling non-technical colleagues to run structured analyses without code access.</span></p>
+</li>
+<li>
+<p><span class="item-dev">Managed Dockerised deployments, CI/CD pipelines and container orchestration on Google Cloud Kubernetes, ensuring reproducibility and secure internal distribution.</span></p>
+</li>
 </ul>
-<p><strong>Cummins | Darlington, UK</strong>
-<em>Design Engineering Placement</em> | 2022 - 2024</p>
+<hr />
+<p><strong>Cummins | Darlington, UK</strong><br />
+<em>Design Engineering Placement</em> | 2022 – 2024</p>
 <ul>
-<li><span class="item-eng">Owned end-to-end development of components for heavy-duty fuel-agnostic engines using PTC Creo.</span></li>
-<li><span class="item-eng">Directed a cross-functional team to resolve critical field issues using 7-Step Root Cause methods.</span></li>
-<li><span class="item-dev">Built Python-based automation tools to post-process FEA/CFD metadata and reduce manual validation time.</span></li>
+<li>
+<p><span class="item-eng">Owned end-to-end design and release of components for fuel-agnostic heavy-duty diesel engines (up to 15L), ensuring compliance with US and European regulatory standards.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Applied advanced PTC Creo workflows including complex surfacing, tolerance stack analysis, and GD&amp;T to ensure manufacturability and durability.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Collaborated with CFD and FEA teams to refine lubrication, cooling, and intake system components against flow, thermal and fatigue targets.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Contributed to Euro VII architecture development, supporting validation builds and cross-functional integration activities.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Led a global, cross-disciplinary team to resolve a field issue using the formal 7-Step Root Cause methodology; implemented validated corrective actions to mitigate in-service risk.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Managed supplier interaction and supported prototype builds, dyno validation and production release documentation.</span></p>
+</li>
+<li>
+<p><span class="item-dev">Developed Python tools to automate FEA/CFD post-processing and metadata extraction, reducing manual validation workload and improving traceability.</span></p>
+</li>
 </ul>
-<h4>ACADEMIC_RECORD</h4>
-<p><strong>University of Leeds</strong>
-<em>MEng Mechanical Engineering</em> | First-Class Honours (77% Avg)</p>
+<hr />
+<h4>SELECTED_TECHNICAL_PROJECTS</h4>
 <ul>
-<li><strong>Research:</strong> Co-authored paper on erosion-corrosion of AM materials (EuroCorr 2025).</li>
-<li><strong>Dissertation:</strong> Validated prototype medical hardware for Eventum Orthopaedics (78.5%).</li>
+<li>
+<p><span class="item-dev">Wind plant simulation platform integrating NREL system models, containerised and deployed with CI/CD for consultant use.</span></p>
+</li>
+<li>
+<p><span class="item-dev">Centralised maintenance management system (Go, PostgreSQL, Next.js) with hybrid relational/EAV schema, OAuth + 2FA authentication and revision tracking.</span></p>
+</li>
+<li>
+<p><span class="item-eng">First-principles turbine optimisation model (MATLAB/Simulink), deriving optimal nozzle geometry and gearbox ratios from head-pressure curves.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Finite Element analysis of composite aircraft stabiliser, including Python-based optimisation of ply orientations for structural response.</span></p>
+</li>
+<li>
+<p><span class="item-eng">Supervised machine learning study predicting erosion–corrosion behaviour in additively manufactured alloys; co-authored paper presented at EuroCorr 2025.</span></p>
+</li>
 </ul>
+<hr />
+<h4>EDUCATION</h4>
+<p><strong>University of Leeds</strong><br />
+<em>MEng Mechanical Engineering (Industrial)</em> | 2019 – 2024<br />
+First-Class Honours (77% Average)</p>
+<ul>
+<li>Dissertation: Experimental validation of prototype medical hardware for Eventum Orthopaedics (78.5%).</li>
+<li>Research: Co-author — erosion–corrosion modelling in AM materials (EuroCorr 2025).</li>
+<li>Completed degree alongside ongoing industrial placement.</li>
+</ul>
+<hr />
+<h4>PROFESSIONAL_STATUS</h4>
+<p>EngTech (IMechE)<br />
+Progressing toward Chartered Engineer (CEng)</p>
+<hr />
+<h4>CORE_COMPETENCIES</h4>
+<p>Mechanical Design:<br />
+Creo, SolidWorks, GD&amp;T, tolerance analysis, DFMA</p>
+<p>Systems &amp; Analysis:<br />
+FMECA, 7-Step Root Cause, validation planning, fatigue &amp; thermal considerations</p>
+<p>Development:<br />
+Go, Python, TypeScript, React/Next.js, REST APIs, Docker, Kubernetes</p>
+<p>Tooling &amp; Modelling:<br />
+MATLAB, Simulink, ANSYS (exposure), CFD/FEA collaboration</p>
             </fieldset>
         </section>
 
         <div class="status-bar">
             <span>FILE: R_PATTON.SYS</span>
-            <span>BUILD: 2026.02.15 14:23:14</span>
+            <span>BUILD: 2026.02.18 21:28:14</span>
             <span>LOC: LONDON_UK</span>
         </div>
     </div>
