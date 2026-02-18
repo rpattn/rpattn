@@ -22,12 +22,13 @@ def build():
     with build_lock:
         print(f"[{time.strftime('%H:%M:%S')}] 🛠 Rebuilding site...")
         try:
+            # Main Pages
             with open(os.path.join(CONTENT_DIR, "home.md")) as f:
                 home_html = markdown.markdown(f.read())
             with open(os.path.join(CONTENT_DIR, "cv.md")) as f:
                 cv_html = markdown.markdown(f.read(), extensions=["extra"])
 
-            # Build projects with toggle logic
+            # Projects Grid
             projects_html = ""
             if os.path.exists(PROJECTS_DIR):
                 project_files = sorted([f for f in os.listdir(PROJECTS_DIR) if f.endswith(".md")])
@@ -35,7 +36,6 @@ def build():
                     with open(os.path.join(PROJECTS_DIR, fname)) as f:
                         content = markdown.markdown(f.read())
                         proj_id = f"proj-toggle-{i}"
-                        # Only the first project starts expanded
                         checked = "checked" if i == 0 else ""
                         
                         projects_html += f'''
@@ -74,18 +74,61 @@ def serve():
         print(f"Server running at http://localhost:{PORT}")
         httpd.serve_forever()
 
+def get_all_paths():
+    """Returns a list of all files we want to monitor for changes."""
+    paths = [
+        os.path.join(CONTENT_DIR, "home.md"),
+        os.path.join(CONTENT_DIR, "cv.md"),
+        TEMPLATE_FILE
+    ]
+    if os.path.exists(PROJECTS_DIR):
+        for fname in os.listdir(PROJECTS_DIR):
+            if fname.endswith(".md"):
+                paths.append(os.path.join(PROJECTS_DIR, fname))
+    return paths
+
 def poll_changes():
+    """Monitors file modification times and triggers build() on change."""
+    # Initial state
+    last_mtimes = {path: os.path.getmtime(path) for path in get_all_paths() if os.path.exists(path)}
+    
     while True:
-        # A simple check for demo; in production use os.path.getmtime comparison
-        build()
         time.sleep(CHECK_INTERVAL)
+        current_paths = get_all_paths()
+        changed = False
+        
+        for path in current_paths:
+            if not os.path.exists(path):
+                continue
+            
+            mtime = os.path.getmtime(path)
+            # If file is new or modified
+            if path not in last_mtimes or mtime > last_mtimes[path]:
+                last_mtimes[path] = mtime
+                changed = True
+        
+        # Check if any files were deleted
+        deleted_paths = [path for path in last_mtimes if path not in current_paths]
+        if deleted_paths:
+            for path in deleted_paths:
+                del last_mtimes[path]
+            changed = True
+
+        if changed:
+            build()
 
 if __name__ == "__main__":
     os.makedirs(CONTENT_DIR, exist_ok=True)
     os.makedirs(PROJECTS_DIR, exist_ok=True)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
+    
+    # Run initial build
     build()
+    
+    # Start server
     threading.Thread(target=serve, daemon=True).start()
+    
+    print(f"Watching {len(get_all_paths())} files for changes...")
     try:
         poll_changes()
     except KeyboardInterrupt:

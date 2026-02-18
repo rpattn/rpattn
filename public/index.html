@@ -62,6 +62,23 @@
         nav { margin: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; display: flex; gap: 10px; flex-wrap: wrap; }
         nav a { text-decoration: none; color: inherit; cursor: pointer; padding: 4px 8px; border: 1px solid var(--border); font-weight: bold; font-size: 0.9rem; }
 
+        nav label, .cv-tabs label { 
+            cursor: pointer; padding: 4px 8px; border: 1px solid var(--border); font-weight: bold; font-size: 0.9rem;
+        }
+
+        /* Highlight Active States */
+        html:has(#tab-all:checked) label[for="tab-all"],
+        html:has(#tab-eng:checked) label[for="tab-eng"],
+        html:has(#tab-dev:checked) label[for="tab-dev"] {
+            background: var(--text); color: var(--bg);
+        }
+
+        input[type="radio"], #theme-toggle { display: none; }
+
+                /* CV Sub-filtering */
+        html:has(#tab-eng:checked) .item-dev { display: none; }
+        html:has(#tab-dev:checked) .item-eng { display: none; }
+
         html:not(:has(section:target)) nav a[href="#"],
         html:has(#page-projects:target) nav a[href="#page-projects"],
         html:has(#page-cv:target) nav a[href="#page-cv"] {
@@ -144,6 +161,9 @@
 <body>
 
     <input type="checkbox" id="theme-toggle">
+    <input type="radio" name="cv-view" id="tab-all" checked>
+    <input type="radio" name="cv-view" id="tab-eng">
+    <input type="radio" name="cv-view" id="tab-dev">
 
     <div class="container">
         <header>
@@ -199,8 +219,7 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
                 
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-0" class="card-toggle" checked>
-                            <label for="proj-toggle-0" class="card">
-                                <h4>CAD Automation &amp; Metadata Pipeline</h4>
+                            <label for="proj-toggle-0" class="card"><h4>CAD Automation &amp; Metadata Pipeline</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -211,14 +230,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Python, CAD APIs, data transformation scripts.</li>
 <li><strong>Result:</strong> Significantly reduced manual engineering documentation time and improved consistency between design revisions.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-1" class="card-toggle" >
-                            <label for="proj-toggle-1" class="card">
-                                <h4>FEA Sandbox</h4>
+                            <label for="proj-toggle-1" class="card"><h4>FEA Sandbox</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -228,14 +244,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> TypeScript, Canvas API, linear algebra routines.</li>
 <li><strong>Result:</strong> Educational tool bridging first-principles mechanics and computational implementation.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-2" class="card-toggle" >
-                            <label for="proj-toggle-2" class="card">
-                                <h4>Engineering Simulation API Extension</h4>
+                            <label for="proj-toggle-2" class="card"><h4>Engineering Simulation API Extension</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -246,14 +259,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Python, FastAPI, Docker, TypeScript.</li>
 <li><strong>Result:</strong> Increased internal adoption by removing scripting barriers and standardising simulation configuration.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-3" class="card-toggle" >
-                            <label for="proj-toggle-3" class="card">
-                                <h4>Digital Design Manager</h4>
+                            <label for="proj-toggle-3" class="card"><h4>Digital Design Manager</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -264,14 +274,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Next.js, Three.js, Electron, Python automation scripts.</li>
 <li><strong>Result:</strong> Reduced manual documentation overhead and improved client-side technical clarity.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-4" class="card-toggle" >
-                            <label for="proj-toggle-4" class="card">
-                                <h4>Early Game Engine Experiments</h4>
+                            <label for="proj-toggle-4" class="card"><h4>Early Game Engine Experiments</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -282,14 +289,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Java, C#, Unity.</li>
 <li><strong>Result:</strong> Built foundational understanding of system logic, rendering pipelines and performance constraints.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-5" class="card-toggle" >
-                            <label for="proj-toggle-5" class="card">
-                                <h4>Erosion–Corrosion ML Study</h4>
+                            <label for="proj-toggle-5" class="card"><h4>Erosion–Corrosion ML Study</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -299,14 +303,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Python, scikit-learn, data preprocessing pipelines.</li>
 <li><strong>Result:</strong> Co-authored paper presented at EuroCorr 2025 demonstrating how data-driven methods complement traditional materials engineering.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-6" class="card-toggle" >
-                            <label for="proj-toggle-6" class="card">
-                                <h4>Medical Device Validation Study</h4>
+                            <label for="proj-toggle-6" class="card"><h4>Medical Device Validation Study</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -317,14 +318,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Experimental design, mechanical testing, statistical analysis.</li>
 <li><strong>Result:</strong> Produced validated performance evidence supporting product development decisions (78.5% dissertation grade).</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-7" class="card-toggle" >
-                            <label for="proj-toggle-7" class="card">
-                                <h4>McLaren F1 Performance Model</h4>
+                            <label for="proj-toggle-7" class="card"><h4>McLaren F1 Performance Model</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -335,14 +333,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> MATLAB, Simulink, vehicle dynamics modelling.</li>
 <li><strong>Result:</strong> Improved prediction accuracy by modelling transient drivetrain effects; achieved additional academic credit for analytical depth.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-8" class="card-toggle" >
-                            <label for="proj-toggle-8" class="card">
-                                <h4>NextCMMS</h4>
+                            <label for="proj-toggle-8" class="card"><h4>NextCMMS</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -353,14 +348,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Go (Golang), PostgreSQL, Next.js, OAuth2, Docker.</li>
 <li><strong>Result:</strong> Created a scalable foundation for asset tracking, maintenance scheduling, and long-term lifecycle analysis.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-9" class="card-toggle" >
-                            <label for="proj-toggle-9" class="card">
-                                <h4>Raspberry Pi Prototyping</h4>
+                            <label for="proj-toggle-9" class="card"><h4>Raspberry Pi Prototyping</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -371,14 +363,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Python, GPIO, Linux environment.</li>
 <li><strong>Result:</strong> Developed practical intuition for debugging hardware–software interactions.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-10" class="card-toggle" >
-                            <label for="proj-toggle-10" class="card">
-                                <h4>Search Map</h4>
+                            <label for="proj-toggle-10" class="card"><h4>Search Map</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -389,14 +378,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Google Maps API, JavaScript, cloud database, REST endpoints.</li>
 <li><strong>Result:</strong> Reduced manual prospecting time by ~120 hours compared to spreadsheet-based search workflows.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-11" class="card-toggle" >
-                            <label for="proj-toggle-11" class="card">
-                                <h4>Composite Stabiliser FEA Study</h4>
+                            <label for="proj-toggle-11" class="card"><h4>Composite Stabiliser FEA Study</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -407,14 +393,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> ANSYS, Python optimisation scripts.</li>
 <li><strong>Result:</strong> Demonstrated improved structural response through automated layup optimisation while maintaining weight constraints.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-12" class="card-toggle" >
-                            <label for="proj-toggle-12" class="card">
-                                <h4>Truss Bridge Stress Analysis Tool</h4>
+                            <label for="proj-toggle-12" class="card"><h4>Truss Bridge Stress Analysis Tool</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -425,14 +408,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> MATLAB, matrix methods, GUI development.</li>
 <li><strong>Result:</strong> Provided clear visual linkage between stiffness matrix formulation and physical stress behaviour.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-13" class="card-toggle" >
-                            <label for="proj-toggle-13" class="card">
-                                <h4>Impulse Turbine Optimisation</h4>
+                            <label for="proj-toggle-13" class="card"><h4>Impulse Turbine Optimisation</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -443,14 +423,11 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> MATLAB, Simulink, analytical modelling.</li>
 <li><strong>Result:</strong> Identified optimal geometric parameters and transmission ratios, improving predicted efficiency and validating against theoretical limits.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
                         <div class="card-wrapper">
                             <input type="checkbox" id="proj-toggle-14" class="card-toggle" >
-                            <label for="proj-toggle-14" class="card">
-                                <h4>WindOps Analysis</h4>
+                            <label for="proj-toggle-14" class="card"><h4>WindOps Analysis</h4>
 <div class="img-container">
     <img class="retro-img" src="https://wallpapers.com/images/hd/industrial-gears-closeup-qo657rvzk8acsfwp.jpg" alt="Wind Plant Simulation" loading="lazy">
 </div>
@@ -460,14 +437,17 @@ Go, Python, TypeScript, React/Next.js, Docker, Kubernetes.</p>
 <ul>
 <li><strong>Tech:</strong> Python, TypeScript, React, Docker, REST APIs.</li>
 <li><strong>Result:</strong> Reduced simulation setup time by ~80% for engineering consultants and standardised model execution workflows.</li>
-</ul>
-                            </label>
+</ul></label>
                         </div>
-                        
             </div>
         </section>
 
         <section id="page-cv" class="page">
+            <div class="cv-tabs" style="margin-bottom: 20px;">
+                <label for="tab-all">EXPANSIVE</label>
+                <label for="tab-eng">ENGINEERING_FOCUS</label>
+                <label for="tab-dev">DEV_FOCUS</label>
+            </div>
             <fieldset><legend>Curriculum_Vitae</legend><h4>PROFESSIONAL_EXPERIENCE</h4>
 <p><strong>Ramboll | London, UK</strong><br />
 <em>Graduate Consultant (Offshore Wind Development)</em> | 2024 – Present</p>
@@ -567,7 +547,7 @@ MATLAB, Simulink, ANSYS (exposure), CFD/FEA collaboration</p></fieldset>
 
         <div class="status-bar">
             <span>FILE: R_PATTON.SYS</span>
-            <span>BUILD: 2026.02.18 22:30:06</span>
+            <span>BUILD: 2026.02.18 22:40:48</span>
             <span>LOC: LONDON_UK</span>
         </div>
     </div>
